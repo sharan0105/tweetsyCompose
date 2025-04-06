@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.tweetsycompose.ui.theme.TweetsyComposeTheme
 import com.example.tweetsycompose.viewModel.CategoryViewModel
@@ -18,6 +17,7 @@ import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
+    //TODO: Fix this dagger is unable to identify map multibinding here
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 

@@ -3,12 +3,13 @@ package com.example.tweetsycompose.viewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
+import javax.inject.Provider
 
 class GlobalVMFactory @Inject constructor(
-    private val vmBindingMap: Map<Class<out ViewModel>, @JvmSuppressWildcards ViewModel>
+    private val map: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ): ViewModelProvider.Factory{
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return vmBindingMap[modelClass] as T
+       return map[modelClass]?.get() as T
     }
 }

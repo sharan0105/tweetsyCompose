@@ -4,6 +4,6 @@ import com.example.tweetsycompose.MainActivity
 import dagger.Component
 
 @Component(modules = [VMModule::class, RetrofitModule::class, VMFactoryModule::class])
-interface AppComponent {
+interface TweetsyAppComponent {
     fun injectMainActivity(activity: MainActivity)
 }
