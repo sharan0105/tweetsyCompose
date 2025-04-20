@@ -13,7 +13,7 @@ class DetailViewModel @Inject constructor(
 ): ViewModel(){
     init {
         viewModelScope.launch {
-            //Fix this up, category shouldn't be hardcoded
+            //TODO: Fix this up, category shouldn't be hardcoded
             repo.getTweets("motivation")
         }
     }

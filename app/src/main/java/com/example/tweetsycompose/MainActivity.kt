@@ -11,32 +11,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
+import com.example.tweetsycompose.screens.CategoryScreen
+import com.example.tweetsycompose.screens.DetailScreen
 import com.example.tweetsycompose.ui.theme.TweetsyComposeTheme
-import com.example.tweetsycompose.viewModel.CategoryViewModel
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
-    //TODO: Fix this dagger is unable to identify map multibinding here
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var categoryViewModel: CategoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val component = (application as? TweetsyApplication)?.appComponent
         component?.injectMainActivity(this)
-        categoryViewModel = ViewModelProvider(this, factory)[CategoryViewModel::class]
         setContent {
             TweetsyComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                CategoryScreen { viewModelFactory }
             }
         }
     }

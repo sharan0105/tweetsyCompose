@@ -29,7 +29,7 @@ class TweetsRepo @Inject constructor(
     }
 
     suspend fun getTweets(category: String){
-        val tweetsRes= api.getTweets(category)
+        val tweetsRes= api.getTweets("tweets[?(@.category==\"$category\")]")
         if(tweetsRes.isNotEmpty()){
             _tweets.update {
                 tweetsRes
