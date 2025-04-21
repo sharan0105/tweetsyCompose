@@ -1,9 +1,11 @@
 package com.example.tweetsycompose.screens
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -31,7 +33,10 @@ import com.example.tweetsycompose.R
 import com.example.tweetsycompose.viewModel.CategoryViewModel
 
 @Composable
-fun CategoryScreen(factory: () -> ViewModelProvider.Factory) {
+fun CategoryScreen(
+    factory: () -> ViewModelProvider.Factory,
+    launchDetailScreen: (category: String)-> Unit
+) {
     //Had to pass the factory to create the viewModel within the composable but will
     //The VM shouldn't get recreated each time the composable is recomposed as per the documentation
     //It says that if the viewModel is already present in the scope then there it will reuse
@@ -39,21 +44,40 @@ fun CategoryScreen(factory: () -> ViewModelProvider.Factory) {
     val categoryViewModel: CategoryViewModel = viewModel(modelClass = CategoryViewModel::class, factory = factory())
     //Whenever state flow gets updated, the composable gets recomposed
     val categories by categoryViewModel.categories.collectAsState()
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.SpaceAround,
-    ){
-        items(categories){
-            CategoryItem(category = it)
+
+    if(categories.isEmpty()){
+        Box(
+            modifier = Modifier.fillMaxSize(1f),
+            contentAlignment = Alignment.Center
+        ){
+            Text(
+                text = "Loading...",
+                style = MaterialTheme.typography.headlineLarge
+            )
+        }
+    } else {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(8.dp),
+            verticalArrangement = Arrangement.SpaceAround,
+        ) {
+            items(categories) {
+                CategoryItem(category = it, launchDetailScreen)
+            }
         }
     }
 }
 
 @Composable
-fun CategoryItem(category: String) {
+fun CategoryItem(
+    category: String,
+    navigateToDetailScreen: (category: String) -> Unit
+) {
     Box(modifier = Modifier
         .padding(4.dp)
+        .clickable {
+            navigateToDetailScreen(category)
+        }
         .size(160.dp)
         .clip(RoundedCornerShape(8.dp))
         .paint(
@@ -77,5 +101,5 @@ fun CategoryItem(category: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewCategoryItem(){
-    CategoryItem(category = "Hello")
+    CategoryItem(category = "Hello", {})
 }

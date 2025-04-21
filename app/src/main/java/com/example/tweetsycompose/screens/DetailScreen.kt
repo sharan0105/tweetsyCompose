@@ -19,8 +19,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tweetsycompose.viewModel.DetailViewModel
 
 @Composable
-fun DetailScreen(factory:() -> ViewModelProvider.Factory){
+fun DetailScreen(
+    factory:() -> ViewModelProvider.Factory,
+    category: String
+)
+{
     val viewModel = viewModel(modelClass = DetailViewModel::class, factory = factory())
+    //Trigger the API to collect quotes for the given category
+    viewModel.getTweets(category)
     val tweetList = viewModel.tweets.collectAsState()
     LazyColumn{
         items(tweetList.value){
